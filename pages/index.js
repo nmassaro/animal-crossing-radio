@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { PlayIcon } from '@heroicons/react/outline'
 
 export default function Home() {
   return (
@@ -15,7 +16,7 @@ export default function Home() {
         </h1>
 
         <p>
-          Listen
+          <PlayIcon role='button' className='h-8 w-8' />
         </p>
       </main>
     </div>
