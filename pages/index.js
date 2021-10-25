@@ -1,7 +1,11 @@
 import Head from 'next/head'
 import { PlayIcon } from '@heroicons/react/outline'
 
+import { useSongs } from '/lib/queries/useSongs'
+
 export default function Home() {
+  const { data: songs } = useSongs()
+
   return (
     <div>
       <Head>
