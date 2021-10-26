@@ -1,12 +1,18 @@
 import Head from 'next/head'
-import { PlayIcon, PauseIcon, FastForwardIcon } from '@heroicons/react/outline'
+import { PlayIcon, PauseIcon, FastForwardIcon, RewindIcon } from '@heroicons/react/outline'
 import { useState, useMemo, useRef, useEffect } from 'react'
 import ReactAudioPlayer from 'react-audio-player'
+import { shuffle } from 'lodash'
 
 import { useSongs } from '/lib/queries/useSongs'
 
 export default function Home() {
-  const { data: songs } = useSongs()
+  const { data: songs = [] } = useSongs()
+
+  const shuffledSongs = useMemo(() => {
+    return shuffle(songs)
+  }, [songs])
+
   const [currentSongIndex, setCurrentSongIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
 
@@ -14,12 +20,14 @@ export default function Home() {
   const audioElement = playerRef.current?.audioEl.current
 
   const songURI = useMemo(() => {
-    const { music_uri } = songs?.[currentSongIndex] || {}
+    const { music_uri } = shuffledSongs?.[currentSongIndex] || {}
     return music_uri
-  }, [songs, currentSongIndex])
+  }, [shuffledSongs, currentSongIndex])
 
   useEffect(() => {
-    audioElement?.play()
+    if (isPlaying) {
+      audioElement?.play()
+    }
   }, [songURI])
 
   const playNextSong = () => {
@@ -27,6 +35,14 @@ export default function Home() {
       currentSongIndex < songs.length
         ? currentSongIndex + 1
         : 0
+    )
+  }
+
+  const playPreviousSong = () => {
+    setCurrentSongIndex(currentSongIndex =>
+      currentSongIndex > 0
+        ? currentSongIndex - 1
+        : songs.length - 1
     )
   }
 
@@ -40,7 +56,7 @@ export default function Home() {
       </Head>
 
       <main className='min-h-screen flex flex-col items-center justify-center'>
-        <h1 className='text-lg font-bold'>
+        <h1 className='text-lg font-bold select-none'>
           animal crossing radio
         </h1>
         <ReactAudioPlayer
@@ -52,11 +68,12 @@ export default function Home() {
           onPause={() => setIsPlaying(false)}
         />
         <div className='flex items-center justify-center'>
+          <RewindIcon role='button' className='h-8 w-8 hover:text-green-800' onClick={playPreviousSong} />
           {isPlaying
-            ? <PauseIcon role='button' className='h-8 w-8' onClick={() => audioElement.pause()} />
-            : <PlayIcon role='button' className='h-8 w-8' onClick={() => audioElement.play()} />
+            ? <PauseIcon role='button' className='h-8 w-8 hover:text-green-800' onClick={() => audioElement.pause()} />
+            : <PlayIcon role='button' className='h-8 w-8 g hover:text-green-800' onClick={() => audioElement.play()} />
           }
-          <FastForwardIcon role='button' className='h-8 w-8' onClick={playNextSong} />
+          <FastForwardIcon role='button' className='h-8 w-8 hover:text-green-800' onClick={playNextSong} />
         </div>
       </main>
     </div>
