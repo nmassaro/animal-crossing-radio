@@ -4,7 +4,7 @@ import { useState, useMemo, useRef, useEffect } from 'react'
 import ReactAudioPlayer from 'react-audio-player'
 import { shuffle } from 'lodash'
 
-import { useSongs } from '/lib/queries/useSongs'
+import { useSongs } from '@lib/queries/useSongs'
 
 export default function Home() {
   const { data: songs = [] } = useSongs()
