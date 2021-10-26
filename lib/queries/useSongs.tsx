@@ -5,8 +5,6 @@ const options = { method: 'GET' as Method, url: 'https://acnhapi.com/v1a/backgro
 
 const getSongs = async () => {
   const response = await axios.request(options)
-  console.log('response.data', response.data)
-
   return response.data
 }
 
