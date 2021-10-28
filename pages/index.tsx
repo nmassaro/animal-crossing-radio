@@ -3,8 +3,15 @@ import { PlayIcon, PauseIcon, FastForwardIcon, RewindIcon } from '@heroicons/rea
 import { useState, useMemo, useRef, useEffect } from 'react'
 import ReactAudioPlayer from 'react-audio-player'
 import { shuffle } from 'lodash'
+import { RainIcon, SnowIcon, SunIcon } from '@components/icons'
 
-import { useSongs } from '@lib/queries/useSongs'
+import { useSongs } from '@queries/useSongs'
+
+const enum Weather {
+  rainy = 'Rainy',
+  sunny = 'Sunny',
+  snowy = 'Snowy',
+}
 
 export default function Home() {
   const { data: songs = [] } = useSongs()
@@ -19,16 +26,15 @@ export default function Home() {
   const playerRef = useRef<ReactAudioPlayer>()
   const audioElement = playerRef.current?.audioEl.current
 
-  const songURI = useMemo(() => {
-    const { music_uri } = shuffledSongs?.[currentSongIndex] || {}
-    return music_uri
+  const song = useMemo(() => {
+    return shuffledSongs?.[currentSongIndex] || {}
   }, [shuffledSongs, currentSongIndex])
 
   useEffect(() => {
     if (isPlaying) {
       audioElement?.play()
     }
-  }, [songURI])
+  }, [song.music_uri])
 
   const playNextSong = () => {
     setCurrentSongIndex(currentSongIndex =>
@@ -46,7 +52,6 @@ export default function Home() {
     )
   }
 
-
   return (
     <div>
       <Head>
@@ -56,12 +61,15 @@ export default function Home() {
       </Head>
 
       <main className='min-h-screen flex flex-col items-center justify-center'>
+        {song.weather === Weather.rainy && <RainIcon />}
+        {song.weather === Weather.sunny && <SunIcon />}
+        {song.weather === Weather.snowy && <SnowIcon />}
         <h1 className='text-lg font-bold select-none'>
           animal crossing radio
         </h1>
         <ReactAudioPlayer
           ref={playerRef}
-          src={songURI}
+          src={song.music_uri}
           controls={false}
           onEnded={playNextSong}
           onPlay={() => setIsPlaying(true)}

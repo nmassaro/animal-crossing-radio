@@ -19,7 +19,9 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@lib/queries/*": ["lib/queries/*"]
+      "@queries/*": ["lib/queries/*"],
+      "@components/*": ["components/*"],
+      "@icons/*": ["components/icons/*"],
     }
   },
   "include": [
