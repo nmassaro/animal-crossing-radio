@@ -5,21 +5,22 @@ import { shuffle } from 'lodash'
 import { RainIcon, SnowIcon, SunIcon } from '@components/icons'
 import { classNames } from '@utils/classNames'
 import { useSongs } from '@queries/useSongs'
+import { ColourMode } from 'pages'
 
 const enum Weather {
   rainy = 'Rainy',
   sunny = 'Sunny',
   snowy = 'Snowy',
 }
+const Icons = {
+  [Weather.rainy]: RainIcon,
+  [Weather.sunny]: SunIcon,
+  [Weather.snowy]: SnowIcon
+}
 
 const WeatherIcon = ({ type = Weather.sunny, shouldAnimate }: { type: Weather, shouldAnimate: boolean }) => {
-  const components = {
-    [Weather.rainy]: RainIcon,
-    [Weather.sunny]: SunIcon,
-    [Weather.snowy]: SnowIcon
-  }
 
-  const Svg = components[type]
+  const Svg = Icons[type]
 
   return (
     <Svg className={
@@ -31,7 +32,11 @@ const WeatherIcon = ({ type = Weather.sunny, shouldAnimate }: { type: Weather, s
   )
 }
 
-export const Player = () => {
+type PlayerProps = {
+  mode: ColourMode
+}
+
+export const Player = ({ mode }: PlayerProps) => {
   const { data: songs = [] } = useSongs()
 
   const shuffledSongs = useMemo(() => {
@@ -41,6 +46,8 @@ export const Player = () => {
   const [currentSongIndex, setCurrentSongIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
 
+
+  const isDarkMode = mode === ColourMode.dark
   const playerRef = useRef<ReactAudioPlayer>()
   const audioElement = playerRef.current?.audioEl.current
 
@@ -70,9 +77,8 @@ export const Player = () => {
     )
   }
   return (
-    <div className='md:space-y-2 text-xl md:text-4xl text-white'>
+    <div className={classNames('md:space-y-2 text-xl md:text-4xl', isDarkMode && 'text-white')}>
       <h1 className='text-center relative font-bold select-none'>
-        <img src={song.image_uri} />
         animal crossing radio
         <div className='absolute -top-8 md:-top-12 left-1/2 transform -translate-x-1/2 flex items-center content-center'>
           <WeatherIcon shouldAnimate={isPlaying} type={song.weather} />
@@ -87,12 +93,12 @@ export const Player = () => {
         onPause={() => setIsPlaying(false)}
       />
       <div className='flex items-center justify-center'>
-        <RewindIcon role='button' className='transform hover:scale-105 h-8 w-8 hover:text-blue-200  transition-all duration-75' onClick={playPreviousSong} />
+        <RewindIcon role='button' className='transform h-8 w-8 hover:scale-110  transition-all duration-75' onClick={playPreviousSong} />
         {isPlaying
-          ? <PauseIcon role='button' className='transform hover:scale-105 h-8 w-8 md:h-9 md:w-9 hover:text-blue-200 transition-all duration-75' onClick={() => audioElement.pause()} />
-          : <PlayIcon role='button' className='transform hover:scale-105 h-8 w-8 md:h-9 md:w-9 g hover:text-blue-200  transition-all duration-75' onClick={() => audioElement.play()} />
+          ? <PauseIcon role='button' className='transform h-8 w-8 md:h-9 md:w-9 hover:scale-110 transition-all duration-75' onClick={() => audioElement.pause()} />
+          : <PlayIcon role='button' className='transform h-8 w-8 md:h-9 md:w-9 g hover:scale-110  transition-all duration-75' onClick={() => audioElement.play()} />
         }
-        <FastForwardIcon role='button' className='transform hover:scale-105 h-8 w-8 hover:text-blue-200  transition-all duration-75' onClick={playNextSong} />
+        <FastForwardIcon role='button' className='transform h-8 w-8 hover:scale-110  transition-all duration-75' onClick={playNextSong} />
       </div>
     </div>
   )

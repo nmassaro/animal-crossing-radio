@@ -12,7 +12,7 @@ export const Toggle = ({ enabled, setEnabled, label }: ToggleProps) => {
     <Switch
       checked={enabled}
       onChange={setEnabled}
-      className={classNames(enabled ? 'bg-green-600' : 'bg-gray-300',
+      className={classNames(enabled ? 'bg-purple-600' : 'bg-gray-400',
         'relative inline-flex items-center h-6 rounded-full w-11 transition-all ease-in-out')}
     >
       <span className="sr-only">{label}</span>
