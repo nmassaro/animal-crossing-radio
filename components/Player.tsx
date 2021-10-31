@@ -1,4 +1,4 @@
-import { PlayIcon, PauseIcon, FastForwardIcon, RewindIcon } from '@heroicons/react/outline'
+import { PlayIcon, PauseIcon, FastForwardIcon, RewindIcon } from '@heroicons/react/solid'
 import { useState, useMemo, useRef, useEffect } from 'react'
 import ReactAudioPlayer from 'react-audio-player'
 import { shuffle } from 'lodash'
@@ -22,7 +22,12 @@ const WeatherIcon = ({ type = Weather.sunny, shouldAnimate }: { type: Weather, s
   const Svg = components[type]
 
   return (
-    <Svg className={classNames('h-8 w-8 hover:text-green-800', shouldAnimate && 'animate-wiggle')} />
+    <Svg className={
+      classNames(
+        'h-8 w-8 md:h-12 md:w-12',
+        shouldAnimate && 'animate-wiggle'
+      )}
+    />
   )
 }
 
@@ -65,10 +70,11 @@ export const Player = () => {
     )
   }
   return (
-    <div className='md:space-y-1'>
-      <h1 className='text-center relative text-lg md:text-2xl font-bold select-none'>
+    <div className='md:space-y-2 text-lg md:text-4xl text-gray-900'>
+      <h1 className='text-center relative font-bold select-none'>
+        <img src={song.image_uri} />
         animal crossing radio
-        <div className='absolute -top-8 left-1/2 transform -translate-x-1/2 flex items-center content-center'>
+        <div className='absolute -top-8 md:-top-12 left-1/2 transform -translate-x-1/2 flex items-center content-center'>
           <WeatherIcon shouldAnimate={isPlaying} type={song.weather} />
         </div>
       </h1>
@@ -81,12 +87,12 @@ export const Player = () => {
         onPause={() => setIsPlaying(false)}
       />
       <div className='flex items-center justify-center'>
-        <RewindIcon role='button' className='h-8 w-8 hover:text-green-800' onClick={playPreviousSong} />
+        <RewindIcon role='button' className='transform hover:scale-105 h-8 w-8 hover:text-green-800' onClick={playPreviousSong} />
         {isPlaying
-          ? <PauseIcon role='button' className='h-8 w-8 hover:text-green-800' onClick={() => audioElement.pause()} />
-          : <PlayIcon role='button' className='h-8 w-8 g hover:text-green-800' onClick={() => audioElement.play()} />
+          ? <PauseIcon role='button' className='transform hover:scale-105 h-8 w-8 md:h-9 md:w-9 hover:text-green-800 transition-all duration-75' onClick={() => audioElement.pause()} />
+          : <PlayIcon role='button' className='transform hover:scale-105 duration-75 h-8 w-8 md:h-9 md:w-9 g hover:text-green-800' onClick={() => audioElement.play()} />
         }
-        <FastForwardIcon role='button' className='h-8 w-8 hover:text-green-800' onClick={playNextSong} />
+        <FastForwardIcon role='button' className='transform hover:scale-105 h-8 w-8 hover:text-green-800' onClick={playNextSong} />
       </div>
     </div>
   )
