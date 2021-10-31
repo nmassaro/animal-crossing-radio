@@ -70,7 +70,7 @@ export const Player = () => {
     )
   }
   return (
-    <div className='md:space-y-2 text-lg md:text-4xl text-gray-900'>
+    <div className='md:space-y-2 text-xl md:text-4xl text-white'>
       <h1 className='text-center relative font-bold select-none'>
         <img src={song.image_uri} />
         animal crossing radio
@@ -87,12 +87,12 @@ export const Player = () => {
         onPause={() => setIsPlaying(false)}
       />
       <div className='flex items-center justify-center'>
-        <RewindIcon role='button' className='transform hover:scale-105 h-8 w-8 hover:text-green-800' onClick={playPreviousSong} />
+        <RewindIcon role='button' className='transform hover:scale-105 h-8 w-8 hover:text-blue-200  transition-all duration-75' onClick={playPreviousSong} />
         {isPlaying
-          ? <PauseIcon role='button' className='transform hover:scale-105 h-8 w-8 md:h-9 md:w-9 hover:text-green-800 transition-all duration-75' onClick={() => audioElement.pause()} />
-          : <PlayIcon role='button' className='transform hover:scale-105 duration-75 h-8 w-8 md:h-9 md:w-9 g hover:text-green-800' onClick={() => audioElement.play()} />
+          ? <PauseIcon role='button' className='transform hover:scale-105 h-8 w-8 md:h-9 md:w-9 hover:text-blue-200 transition-all duration-75' onClick={() => audioElement.pause()} />
+          : <PlayIcon role='button' className='transform hover:scale-105 h-8 w-8 md:h-9 md:w-9 g hover:text-blue-200  transition-all duration-75' onClick={() => audioElement.play()} />
         }
-        <FastForwardIcon role='button' className='transform hover:scale-105 h-8 w-8 hover:text-green-800' onClick={playNextSong} />
+        <FastForwardIcon role='button' className='transform hover:scale-105 h-8 w-8 hover:text-blue-200  transition-all duration-75' onClick={playNextSong} />
       </div>
     </div>
   )
