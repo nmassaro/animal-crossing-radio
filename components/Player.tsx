@@ -65,8 +65,8 @@ export const Player = () => {
     )
   }
   return (
-    <div>
-      <h1 className='text-center relative ext-lg font-bold select-none'>
+    <div className='md:space-y-1'>
+      <h1 className='text-center relative text-lg md:text-2xl font-bold select-none'>
         animal crossing radio
         <div className='absolute -top-8 left-1/2 transform -translate-x-1/2 flex items-center content-center'>
           <WeatherIcon shouldAnimate={isPlaying} type={song.weather} />
