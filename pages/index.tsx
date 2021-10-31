@@ -13,6 +13,20 @@ const enum Weather {
   snowy = 'Snowy',
 }
 
+const WeatherIcon = ({ type = Weather.sunny }: { type: Weather }) => {
+  const components = {
+    [Weather.rainy]: RainIcon,
+    [Weather.sunny]: SunIcon,
+    [Weather.snowy]: SnowIcon
+  }
+
+  const Svg = components[type]
+
+  return (
+    <Svg className='h-8 w-8 hover:text-green-800' />
+  )
+}
+
 export default function Home() {
   const { data: songs = [] } = useSongs()
 
@@ -61,11 +75,11 @@ export default function Home() {
       </Head>
 
       <main className='min-h-screen flex flex-col items-center justify-center'>
-        {song.weather === Weather.rainy && <RainIcon />}
-        {song.weather === Weather.sunny && <SunIcon />}
-        {song.weather === Weather.snowy && <SnowIcon />}
-        <h1 className='text-lg font-bold select-none'>
+        <h1 className='text-center relative ext-lg font-bold select-none'>
           animal crossing radio
+          <div className='absolute -top-8 left-1/2 transform -translate-x-1/2 flex items-center content-center'>
+            <WeatherIcon type={song.weather} />
+          </div>
         </h1>
         <ReactAudioPlayer
           ref={playerRef}
