@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useEffect } from 'react'
 import ReactAudioPlayer from 'react-audio-player'
 import { shuffle } from 'lodash'
 import { RainIcon, SnowIcon, SunIcon } from '@components/icons'
+import { classNames } from '@utils/classNames'
 
 import { useSongs } from '@queries/useSongs'
 
@@ -13,7 +14,7 @@ const enum Weather {
   snowy = 'Snowy',
 }
 
-const WeatherIcon = ({ type = Weather.sunny }: { type: Weather }) => {
+const WeatherIcon = ({ type = Weather.sunny, shouldAnimate }: { type: Weather, shouldAnimate: boolean }) => {
   const components = {
     [Weather.rainy]: RainIcon,
     [Weather.sunny]: SunIcon,
@@ -23,7 +24,7 @@ const WeatherIcon = ({ type = Weather.sunny }: { type: Weather }) => {
   const Svg = components[type]
 
   return (
-    <Svg className='h-8 w-8 hover:text-green-800' />
+    <Svg className={classNames('h-8 w-8 hover:text-green-800', shouldAnimate && 'animate-wiggle')} />
   )
 }
 
@@ -78,7 +79,7 @@ export default function Home() {
         <h1 className='text-center relative ext-lg font-bold select-none'>
           animal crossing radio
           <div className='absolute -top-8 left-1/2 transform -translate-x-1/2 flex items-center content-center'>
-            <WeatherIcon type={song.weather} />
+            <WeatherIcon shouldAnimate={isPlaying} type={song.weather} />
           </div>
         </h1>
         <ReactAudioPlayer

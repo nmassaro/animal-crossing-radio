@@ -22,6 +22,7 @@
       "@queries/*": ["lib/queries/*"],
       "@components/*": ["components/*"],
       "@icons/*": ["components/icons/*"],
+      "@utils/*": ["lib/utils/*"]
     }
   },
   "include": [
