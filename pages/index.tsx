@@ -28,7 +28,7 @@ export default function Home() {
           <MoonIcon className={classNames('h-7 w-7 mb-1', isDarkMode ? 'text-yellow-400' : 'text-gray-900')} />
         </div>
         <div className='min-h-screen flex flex-col items-center justify-center'>
-          <Player mode={mode} />
+          <Player mode={mode as ColourMode} />
         </div>
       </main>
     </div>
