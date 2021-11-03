@@ -4,14 +4,15 @@ import { useState } from 'react'
 import { Toggle } from '@components/Toggle'
 import { classNames } from '@utils/classNames'
 import { MoonIcon } from '@heroicons/react/solid'
+import { useLocalStorage } from '@hooks/useLocalStorage'
 
 export enum ColourMode {
-  dark,
-  light
+  dark = 'dark',
+  light = 'light'
 }
 
 export default function Home() {
-  const [mode, setMode] = useState<ColourMode>(ColourMode.light)
+  const [mode, setMode] = useLocalStorage('acr-color-mode', ColourMode.light)
   const isDarkMode = mode === ColourMode.dark
 
   return (
