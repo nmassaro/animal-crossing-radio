@@ -25,7 +25,7 @@ export default function Home() {
       <main className={classNames(isDarkMode ? 'bg-gray-800' : 'bg-white', 'transition-all duration-600')}>
         <div className='p-4 flex items-center space-x-4 fixed'>
           <Toggle label='Toggle Night Mode' setEnabled={(isEnabled) => isEnabled ? setMode(ColourMode.dark) : setMode(ColourMode.light)} enabled={mode === ColourMode.dark} />
-          <MoonIcon className={classNames('h-7 w-7 mb-1', isDarkMode ? 'text-yellow-400' : 'text-gray-900')} />
+          <MoonIcon className={classNames('h-7 w-7 mb-1', isDarkMode ? 'text-yellow-400' : 'text-gray-700')} />
         </div>
         <div className='min-h-screen flex flex-col items-center justify-center'>
           <Player mode={mode as ColourMode} />

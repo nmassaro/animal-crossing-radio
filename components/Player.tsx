@@ -80,7 +80,7 @@ export const Player = ({ mode }: PlayerProps) => {
     )
   }
   return (
-    <div className={classNames('md:space-y-2', isDarkMode && 'text-white')}>
+    <div className={classNames('md:space-y-2', isDarkMode ? 'text-white' : 'text-gray-700')}>
       <div className='relative'>
         <h1 className='text-xl md:text-4xl text-center relative font-bold select-none'>
           animal crossing radio
