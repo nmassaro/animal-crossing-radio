@@ -1,13 +1,21 @@
 import axios, { Method } from "axios";
 import { useQuery } from "react-query";
 
-const options = { method: 'GET' as Method, url: 'https://acnhapi.com/v1a/backgroundmusic/' };
+type RequestData = {
+  hour: number
+}
 
-const getSongs = async () => {
-  const response = await axios.request(options)
+const getSongs = async ({ hour }: RequestData) => {
+  const response = await axios.request({
+    method: 'GET' as Method,
+    url: '/api/music',
+    params: {
+      hour
+    }
+  })
   return response.data
 }
 
-export const useSongs = () => {
-  return useQuery('songs', getSongs)
+export const useSongs = ({ hour }: RequestData) => {
+  return useQuery(['songs', hour], () => getSongs({ hour }))
 }

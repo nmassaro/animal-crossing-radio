@@ -12,6 +12,7 @@ const enum Weather {
   sunny = 'Sunny',
   snowy = 'Snowy',
 }
+
 const Icons = {
   [Weather.rainy]: RainIcon,
   [Weather.sunny]: SunIcon,
@@ -37,11 +38,13 @@ type PlayerProps = {
 }
 
 export const Player = ({ mode }: PlayerProps) => {
-  const { data: songs = [] } = useSongs()
+  const userTime = useMemo(() => {
+    return new Date()
+  }, [])
 
-  const shuffledSongs = useMemo(() => {
-    return shuffle(songs)
-  }, [songs])
+  const hourOfDay = userTime.getHours()
+
+  const { data: songs = [], isLoading } = useSongs({ hour: hourOfDay })
 
   const [currentSongIndex, setCurrentSongIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -52,8 +55,8 @@ export const Player = ({ mode }: PlayerProps) => {
   const audioElement = playerRef.current?.audioEl.current
 
   const song = useMemo(() => {
-    return shuffledSongs?.[currentSongIndex] || {}
-  }, [shuffledSongs, currentSongIndex])
+    return songs?.[currentSongIndex] || {}
+  }, [songs, currentSongIndex])
 
   useEffect(() => {
     if (isPlaying) {
@@ -63,7 +66,7 @@ export const Player = ({ mode }: PlayerProps) => {
 
   const playNextSong = () => {
     setCurrentSongIndex(currentSongIndex =>
-      currentSongIndex < songs.length
+      currentSongIndex < songs.length - 1
         ? currentSongIndex + 1
         : 0
     )
@@ -77,13 +80,20 @@ export const Player = ({ mode }: PlayerProps) => {
     )
   }
   return (
-    <div className={classNames('md:space-y-2 text-xl md:text-4xl', isDarkMode && 'text-white')}>
-      <h1 className='text-center relative font-bold select-none'>
-        animal crossing radio
-        <div className='absolute -top-8 md:-top-12 left-1/2 transform -translate-x-1/2 flex items-center content-center'>
-          <WeatherIcon shouldAnimate={isPlaying} type={song.weather} />
-        </div>
-      </h1>
+    <div className={classNames('md:space-y-2', isDarkMode && 'text-white')}>
+      <div className='relative'>
+        <h1 className='text-xl md:text-4xl text-center relative font-bold select-none'>
+          animal crossing radio
+        </h1>
+        {isLoading ? null : (
+          <div className='gap-2 sm:gap-none self-center font-serif absolute -top-8 md:-top-12 left-1/2 transform -translate-x-1/2 grid grid-cols-3 items-center justify-items-center justify-center'>
+            <p className='textSm mr-2 whitespace-nowrap'>hour {hourOfDay}</p>
+            <WeatherIcon shouldAnimate={isPlaying} type={song.weather} />
+            <p className='textSm lowercase'>{song.weather}</p>
+          </div>
+        )}
+
+      </div>
       <ReactAudioPlayer
         ref={playerRef}
         src={song.music_uri}
